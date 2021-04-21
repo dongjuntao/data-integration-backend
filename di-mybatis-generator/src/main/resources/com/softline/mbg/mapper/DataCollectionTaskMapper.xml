@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.softline.mbg.mapper.DataCollectionTaskMapper">
+  <resultMap id="BaseResultMap" type="com.softline.mbg.model.DataCollectionTask">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_name" jdbcType="VARCHAR" property="taskName" />
+    <result column="task_desc" jdbcType="VARCHAR" property="taskDesc" />
+    <result column="import_data_source_id" jdbcType="BIGINT" property="importDataSourceId" />
+    <result column="export_data_source_id" jdbcType="BIGINT" property="exportDataSourceId" />
+    <result column="is_need_mapper" jdbcType="INTEGER" property="isNeedMapper" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.softline.mbg.model.DataCollectionTask">
+    <result column="selected_tables_fields" jdbcType="LONGVARCHAR" property="selectedTablesFields" />
+    <result column="map_tables_fields" jdbcType="LONGVARCHAR" property="mapTablesFields" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, task_name, task_desc, import_data_source_id, export_data_source_id, is_need_mapper, 
+    status, create_time
+  </sql>
+  <sql id="Blob_Column_List">
+    selected_tables_fields, map_tables_fields
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.softline.mbg.model.DataCollectionTaskExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from data_collection_task
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.softline.mbg.model.DataCollectionTaskExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from data_collection_task
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from data_collection_task
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from data_collection_task
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.softline.mbg.model.DataCollectionTaskExample">
+    delete from data_collection_task
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.softline.mbg.model.DataCollectionTask">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into data_collection_task (task_name, task_desc, import_data_source_id, 
+      export_data_source_id, is_need_mapper, status, 
+      create_time, selected_tables_fields, 
+      map_tables_fields)
+    values (#{taskName,jdbcType=VARCHAR}, #{taskDesc,jdbcType=VARCHAR}, #{importDataSourceId,jdbcType=BIGINT}, 
+      #{exportDataSourceId,jdbcType=BIGINT}, #{isNeedMapper,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{selectedTablesFields,jdbcType=LONGVARCHAR}, 
+      #{mapTablesFields,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.softline.mbg.model.DataCollectionTask">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into data_collection_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskName != null">
+        task_name,
+      </if>
+      <if test="taskDesc != null">
+        task_desc,
+      </if>
+      <if test="importDataSourceId != null">
+        import_data_source_id,
+      </if>
+      <if test="exportDataSourceId != null">
+        export_data_source_id,
+      </if>
+      <if test="isNeedMapper != null">
+        is_need_mapper,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="selectedTablesFields != null">
+        selected_tables_fields,
+      </if>
+      <if test="mapTablesFields != null">
+        map_tables_fields,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskName != null">
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDesc != null">
+        #{taskDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="importDataSourceId != null">
+        #{importDataSourceId,jdbcType=BIGINT},
+      </if>
+      <if test="exportDataSourceId != null">
+        #{exportDataSourceId,jdbcType=BIGINT},
+      </if>
+      <if test="isNeedMapper != null">
+        #{isNeedMapper,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="selectedTablesFields != null">
+        #{selectedTablesFields,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mapTablesFields != null">
+        #{mapTablesFields,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.softline.mbg.model.DataCollectionTaskExample" resultType="java.lang.Long">
+    select count(*) from data_collection_task
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update data_collection_task
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskName != null">
+        task_name = #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskDesc != null">
+        task_desc = #{record.taskDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.importDataSourceId != null">
+        import_data_source_id = #{record.importDataSourceId,jdbcType=BIGINT},
+      </if>
+      <if test="record.exportDataSourceId != null">
+        export_data_source_id = #{record.exportDataSourceId,jdbcType=BIGINT},
+      </if>
+      <if test="record.isNeedMapper != null">
+        is_need_mapper = #{record.isNeedMapper,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.selectedTablesFields != null">
+        selected_tables_fields = #{record.selectedTablesFields,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.mapTablesFields != null">
+        map_tables_fields = #{record.mapTablesFields,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update data_collection_task
+    set id = #{record.id,jdbcType=BIGINT},
+      task_name = #{record.taskName,jdbcType=VARCHAR},
+      task_desc = #{record.taskDesc,jdbcType=VARCHAR},
+      import_data_source_id = #{record.importDataSourceId,jdbcType=BIGINT},
+      export_data_source_id = #{record.exportDataSourceId,jdbcType=BIGINT},
+      is_need_mapper = #{record.isNeedMapper,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      selected_tables_fields = #{record.selectedTablesFields,jdbcType=LONGVARCHAR},
+      map_tables_fields = #{record.mapTablesFields,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update data_collection_task
+    set id = #{record.id,jdbcType=BIGINT},
+      task_name = #{record.taskName,jdbcType=VARCHAR},
+      task_desc = #{record.taskDesc,jdbcType=VARCHAR},
+      import_data_source_id = #{record.importDataSourceId,jdbcType=BIGINT},
+      export_data_source_id = #{record.exportDataSourceId,jdbcType=BIGINT},
+      is_need_mapper = #{record.isNeedMapper,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.softline.mbg.model.DataCollectionTask">
+    update data_collection_task
+    <set>
+      <if test="taskName != null">
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDesc != null">
+        task_desc = #{taskDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="importDataSourceId != null">
+        import_data_source_id = #{importDataSourceId,jdbcType=BIGINT},
+      </if>
+      <if test="exportDataSourceId != null">
+        export_data_source_id = #{exportDataSourceId,jdbcType=BIGINT},
+      </if>
+      <if test="isNeedMapper != null">
+        is_need_mapper = #{isNeedMapper,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="selectedTablesFields != null">
+        selected_tables_fields = #{selectedTablesFields,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="mapTablesFields != null">
+        map_tables_fields = #{mapTablesFields,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.softline.mbg.model.DataCollectionTask">
+    update data_collection_task
+    set task_name = #{taskName,jdbcType=VARCHAR},
+      task_desc = #{taskDesc,jdbcType=VARCHAR},
+      import_data_source_id = #{importDataSourceId,jdbcType=BIGINT},
+      export_data_source_id = #{exportDataSourceId,jdbcType=BIGINT},
+      is_need_mapper = #{isNeedMapper,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      selected_tables_fields = #{selectedTablesFields,jdbcType=LONGVARCHAR},
+      map_tables_fields = #{mapTablesFields,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.softline.mbg.model.DataCollectionTask">
+    update data_collection_task
+    set task_name = #{taskName,jdbcType=VARCHAR},
+      task_desc = #{taskDesc,jdbcType=VARCHAR},
+      import_data_source_id = #{importDataSourceId,jdbcType=BIGINT},
+      export_data_source_id = #{exportDataSourceId,jdbcType=BIGINT},
+      is_need_mapper = #{isNeedMapper,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
